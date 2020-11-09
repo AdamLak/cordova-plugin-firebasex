@@ -1,11 +1,20 @@
 var execSync = require('child_process').execSync;
 var semver = require('semver');
 
+var supportedOsPlatforms = ['darwin'];
 var minCocoapodsVersion = "^1.9.1";
 
 module.exports = function(context) {
-    checkCocoapodsVersion();
+    if (isPlatformSupported()) {
+        checkCocoapodsVersion();
+    } else {
+        console.log(`CocoaPods check and installation ignored on ${process.platform}`);
+    }
 };
+
+function isPlatformSupported () {
+    return (supportedOsPlatforms.indexOf(process.platform) !== -1);
+}
 
 function checkCocoapodsVersion(){
     var version;
